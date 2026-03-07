@@ -1,0 +1,12 @@
+@startuml
+
+class SingletonLog {
+  -instance:SingletonLog
+  -cont : int
+  -SingletonLogLog()
+  +getInstance():Log
+  +QtdAcesso(): int
+}
+
+SingletonLog -up-> SingletonLog 
+@enduml
