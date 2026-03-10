@@ -1,10 +1,10 @@
 @startuml
 
 class SingletonLog {
-  -instance:SingletonLog
+  {static} -instance:SingletonLog
   -cont : int
   -SingletonLogLog()
-  +getInstance():Log
+  {static} +getInstance():Log
   +QtdAcesso(): int
 }
 
