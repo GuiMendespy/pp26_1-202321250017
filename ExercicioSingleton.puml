@@ -3,10 +3,16 @@
 class SingletonLog {
   {static} -instance:SingletonLog
   -cont : int
-  -SingletonLogLog()
+  -SingletonLog()
+  -lista : List<int>
   {static} +getInstance():Log
   +QtdAcesso(): int
+  +getLog(): List<int>
 }
-
 SingletonLog -up-> SingletonLog 
-@enduml
+
+class Cliente {
+    +Main(): void
+}
+Cliente..> SingletonLog
+@endumln
