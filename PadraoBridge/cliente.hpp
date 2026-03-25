@@ -1,7 +1,9 @@
-#include<iostream>
-#include <string.h>
-using namespace std;
+#ifndef CLIENTE_HPP
+#define CLIENTE_HPP
 
-class cliente{
-    
+class cliente {
+public:
+    void executar();
 };
+
+#endif
