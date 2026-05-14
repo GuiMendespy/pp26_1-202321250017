@@ -11,12 +11,12 @@ Fachada* Fachada::getInstance() {
     return instance;
 }
 
-void Fachada::cadastrar(std::string nome, int matric, std::string senha) {
+void Fachada::cadastrar(std::string nome, double matric, std::string senha) {
     Usuario u(nome, matric, senha);
     banco.inserirUsuario(u);
 }
 
-bool Fachada::autenticar(int matric, std::string senha) {
+bool Fachada::autenticar(double matric, std::string senha) {
     Usuario* u = banco.buscarUsuario(matric);
 
     if (u && u->verificaSenha(senha))
@@ -27,7 +27,10 @@ bool Fachada::autenticar(int matric, std::string senha) {
 
 void Fachada::mostrarDesempenho() {
     auto lista = banco.listarRanking();
+
     for (auto &u : lista) {
-        std::cout << u.getNome() << std::endl;
+        std::cout << "Nome: " << u.getNome()
+                  << " | Pontuação: " << u.getRanking()
+                  << std::endl;
     }
 }

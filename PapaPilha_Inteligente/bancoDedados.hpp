@@ -10,7 +10,7 @@ private:
 
 public:
     void inserirUsuario(Usuario usuario);
-    Usuario* buscarUsuario(int matric);
+    Usuario* buscarUsuario(double matric);
     std::vector<Usuario> listarRanking();
 };
 

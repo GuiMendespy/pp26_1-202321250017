@@ -4,7 +4,7 @@ void BancoDeDados::inserirUsuario(Usuario usuario) {
     usuarios.push_back(usuario);
 }
 
-Usuario* BancoDeDados::buscarUsuario(int matric) {
+Usuario* BancoDeDados::buscarUsuario(double matric) {
     for (auto &u : usuarios) {
         if (u.getMatric() == matric)
             return &u;

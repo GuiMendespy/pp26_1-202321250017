@@ -11,11 +11,12 @@ private:
     int pontos;
 
 public:
-    Usuario(std::string nome, int matric, std::string senha);
+    Usuario(std::string nome, double matric, std::string senha);
 
     std::string getNome();
     double getMatric();
     std::string getSenha();
+    int getRanking();
 
     bool verificaSenha(std::string senha);
     void adicionarPontos(int pontos);

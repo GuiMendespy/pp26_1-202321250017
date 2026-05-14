@@ -2,6 +2,8 @@
 #define FACHADA_HPP
 
 #include "bancoDedados.hpp"
+#include "ranking.hpp"
+
 #include "enumeration.cpp"
 
 class Fachada {
@@ -14,8 +16,8 @@ private:
 public:
     static Fachada* getInstance();
 
-    void cadastrar(std::string nome, int matric, std::string senha);
-    bool autenticar(int matric, std::string senha);
+    void cadastrar(std::string nome, double matric, std::string senha);
+    bool autenticar(double matric, std::string senha);
     void mostrarDesempenho();
 };
 

@@ -1,0 +1,196 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam nodesep 60
+skinparam ranksep 80
+
+' --- CAMADA SUPERIOR ---
+class Cliente {
+    +Main(): void
+}
+
+abstract class UI {
+    +iniciar(): void
+    +encerrar(): void
+    +exibirMensagem(msg: String): void
+    +solicitarEntrada(): String
+}
+
+class Terminal {
+    +telaInicio(): void
+    +telaDebate(): void
+    +telaRelatorio(): void
+    +exibirMenu(): void
+    +lerComando(): String
+}
+
+class GUI {
+    +atualizarTela(): void
+    +exibirCronometro(tempo: String): void
+    +exibirPainel(candidatos: List): void
+    +alertarTransicao(msg: String): void
+}
+
+Cliente -right-> UI
+UI -right-> Terminal
+UI -right-> GUI
+
+' --- CAMADA CENTRAL (FACHADA) ---
+class DebatePolitico <<Singleton>> {
+    -instance: DebatePolitico
+    -logger: Logger
+    -DebatePolitico()
+    +getInstance(): DebatePolitico
+    +temporizacao(): void
+    +sorteio(): void
+    +escolha(): void
+    +debate(): void
+    +relatorio(): void
+}
+
+Terminal -down-> DebatePolitico
+GUI -down-> DebatePolitico
+
+note top of DebatePolitico
+  MÉTODO ESTÁTICO getInstance():
+  SE instance == NULO:
+    instance = NOVO DebatePolitico()
+  RETORNA instance
+  FIM MÉTODO
+end note
+
+' --- SUBSISTEMAS COM ACESSO POR INTERFACE (CÍRCULOS) ---
+
+' Conexões com o círculo ()-- para representar o acesso aos subsistemas
+DebatePolitico --() Apresentador
+DebatePolitico --() Temporizador
+DebatePolitico --() Sorteador
+DebatePolitico --() Escolha
+DebatePolitico --() Logger
+
+abstract class Apresentador {
+    +debate(): void
+}
+
+class Temporizador {
+    -tempo: int
+    +iniciarTempo(): void
+    +decorreTempo(tempo): void
+    +pausarTempo(): void
+    +getTempo(): string
+}
+
+class Sorteador {
+    -candidatos: List<Candidatos>
+    +realizarSorteio(): Candidatos
+    +adicionarCandidato(c: Candidatos): void
+    +retirarCandidatos(c: Candidatos): void
+}
+
+class Escolha {
+    -candidatos: List<Candidatos>
+    +realizarEscolha(): Candidatos
+    +filtrarDisponiveis(): List
+}
+
+class Logger {
+    -logs: List<String>
+    +log(mensagem: string): void
+    +getHistorico(): List<String>
+    +limparLogs(): void
+}
+
+' --- CAMADA DE IMPLEMENTAÇÃO ---
+
+class Politico {
+    -mediador: Apresentador
+    +debate(): void
+}
+
+class ApresentadorConcreto {
+    -inquiridor: Inquiridor
+    -inquirido: Inquirido
+    -cont: int
+    +debate(): void
+    +getContador(): string
+    +setContador(): void
+}
+
+interface Notificavel {
+    +onTempoEsgotado(): void
+}
+
+class Candidatos {
+    -nome: string
+    -partido: string
+    -idade: int
+    -candidatos: List<Candidatos>
+    -microfone: Microfone
+    +getNome(): string
+    +getPartido(): string
+    +getIdade(): int
+    +getMicrofone(): Microfone
+    +habilitarFala(): void
+    +silenciar(): void
+}
+
+class Arquivo {
+    -caminhoArquivo: String
+    +gerarRelatorio(dados: List<String>): void
+    +abrirArquivo(): File
+}
+
+interface Inquiridor {
+    +Dialogo(): void
+    +estadoMic(): void
+}
+
+interface Inquirido {
+    +Dialogo(): void
+    +estadoMic(): void
+}
+
+class Microfone {
+    -id: string
+    -ativo: bool
+    -temporizador: Temporizador
+    -candidato: Candidato
+    +ligar(): void
+    +desligar(): void
+    +isAtivo(): bool
+    +configurarTempo(t: int): void
+    +onTempoEsgotado(): void
+}
+
+' Relacionamentos finais
+Politico -up-> Apresentador
+Apresentador <|-- ApresentadorConcreto
+ApresentadorConcreto o-- Inquiridor
+ApresentadorConcreto o-- Inquirido
+
+Inquiridor <|.. Politico
+Inquirido <|.. Politico
+
+Sorteador -down-> Candidatos
+Escolha -down-> Candidatos
+Candidatos "1" *-- "1" Microfone
+Notificavel <|.. Microfone
+Microfone -up-> Temporizador
+Logger -down-> Arquivo
+
+' Notas de lógica
+note right of Logger
+  METODO log(mensagem):
+  TEXTO registro = DataHoraAtual() + " - " + mensagem
+  ADICIONAR registro EM lista_logs
+  EXIBIR registro NO CONSOLE
+  FIM METODO
+end note
+
+note bottom of Microfone
+  METODO ligar():
+  this.ativo = true
+  temporizador.iniciarTempo()
+  FIM METODO
+end note
+
+@enduml

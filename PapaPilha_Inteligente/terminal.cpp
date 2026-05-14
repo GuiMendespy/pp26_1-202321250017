@@ -81,21 +81,25 @@ void Terminal::menuPrincipal() {
 
     do {
         cout << "\n=== MENU PRINCIPAL ===\n";
-        cout << "1 - Descartar Pilha\n";
-        cout << "2 - Ver Ranking\n";
-        cout << "3 - Ver Desempenho\n";
+        cout << "1 - Cadastrar novo usuário\n";
+        cout << "2 - Descartar Pilha\n";
+        cout << "3 - Ver Ranking\n";
+        cout << "4 - Ver Desempenho\n";
         cout << "0 - Sair\n";
         cout << "Escolha: ";
         cin >> opcao;
 
         switch(opcao) {
             case 1:
-                telaDescarte();
+                telaCadastro();
                 break;
             case 2:
-                telaRanking();
+                telaDescarte();
                 break;
             case 3:
+                telaRanking();
+                break;
+            case 4:
                 Fachada::getInstance()->mostrarDesempenho();
                 break;
             case 0:
