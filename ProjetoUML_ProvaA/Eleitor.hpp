@@ -1,14 +1,15 @@
 #pragma once
 #include <string>
+#include "Observador.hpp"
 using namespace std;
 
-class Eleitor {
+class Eleitor : public Observador{
     private:
-        int id;
+        int idCandidatoFavorito;
         string nome;
         int candidatoId;
     public:
-        Eleitor();
+        Eleitor(int idFavorito);
         void atualizar(string msg);
         int getCandidatoId();
         string exibirNotificacao();

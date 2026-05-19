@@ -8,9 +8,6 @@ Logger::Logger() {
 void Logger::registrar(std::string mensagem) {
     // 1. Guarda a mensagem no histórico em memória
     this->logs.push_back(mensagem);
-    
-    // 2. Opcional: Mostra na tela imediatamente também (se você quiser acompanhar em tempo real)
-    std::cout << "[LOG CAPTURADO]: " << mensagem << std::endl;
 }
 
 void Logger::gerarRelatorio() {

@@ -22,7 +22,7 @@ void CandidatoConcreto::remover(Observador* o) {
 void CandidatoConcreto::notificar() {
     for (Observador* obs : observadores) {
         if (obs != nullptr) {
-            obs->atualizar(); // Dispara o método virtual da interface Observador
+            obs->atualizar("Eleitor Notificado"); // Dispara o método virtual da interface Observador
         }
     }
 }
