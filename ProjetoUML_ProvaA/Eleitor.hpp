@@ -1,16 +1,27 @@
 #pragma once
 #include <string>
+#include <memory>
 #include "Observador.hpp"
-using namespace std;
+#include "Prototipo.hpp"
 
-class Eleitor : public Observador{
-    private:
-        int idCandidatoFavorito;
-        string nome;
-        int candidatoId;
-    public:
-        Eleitor(int idFavorito);
-        void atualizar(string msg);
-        int getCandidatoId();
-        string exibirNotificacao();
+class EleitorConcretoBuilder;
+
+
+class Eleitor : public Observador, public Prototipo {
+private:
+    int idCandidatoFavorito;
+    std::string nome;
+    int candidatoId;
+
+    friend class EleitorConcretoBuilder;
+
+public:
+    explicit Eleitor(int idFavorito);
+
+    Eleitor* clonar() const override;          
+
+    void atualizar(std::string msg) override;
+
+    int getCandidatoId() override;
+    std::string exibirNotificacao() const;
 };

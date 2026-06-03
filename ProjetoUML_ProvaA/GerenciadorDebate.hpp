@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "Candidato.hpp"
+#include "CandidatoConcretoBuilder.hpp" 
 #include "Cronometro.hpp"
 #include "Observador.hpp" 
 
@@ -11,17 +11,17 @@ enum SubFase { PERGUNTA, RESPOSTA, REPLICA, TREPLICA, FIM_DA_RODADA };
 
 class GerenciadorDebate {
 private:
-    vector<Candidato*> candidatos;
-    vector<Candidato*> inquiridoresRestantes; 
-    Candidato* inquiridor;
-    Candidato* inquirido;
-    Cronometro cronometro;
+    vector<CandidatoConcreto*> candidatos;             
+    vector<CandidatoConcreto*> inquiridoresRestantes; 
+    CandidatoConcreto* inquiridor;                      
+    CandidatoConcreto* inquirido;                      
 
     string nomeInquiridor;
     string nomeInquirido;
+    Cronometro cronometro;
     
     vector<Observador*> observadores; 
-    Candidato* candidatoAtual;
+    CandidatoConcreto* candidatoAtual;                  
     
     SubFase subFaseAtual = PERGUNTA;
     string faseAtual;
@@ -29,7 +29,7 @@ private:
 public:
     GerenciadorDebate();
     
-    void setCandidatos(const vector<Candidato*>& novosCandidatos);
+    void setCandidatos(const vector<CandidatoConcreto*>& novosCandidatos);
     void sortearInquiridor();
     void definirInquirido(int id);
     void iniciarFase(int tempo);
@@ -38,6 +38,6 @@ public:
 
     void registrarObservador(Observador* obs);
     void notificarTodos(string mensagem);
-    void setCandidatoAtual(Candidato* c);
+    void setCandidatoAtual(CandidatoConcreto* c);       
     void executarRodadaAutomatica(int tempoPorEtapa);
 };

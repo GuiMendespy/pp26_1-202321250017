@@ -2,7 +2,6 @@
 
 class Microfone {
     private:
-    
         int id;
         bool ligado;
 

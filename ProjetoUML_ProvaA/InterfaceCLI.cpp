@@ -1,5 +1,6 @@
 #include "InterfaceCLI.hpp"
 #include "Facade.hpp"
+#include "CandidatoConcretoBuilder.hpp" // Para a CLI conhecer a estrutura de CandidatoConcreto
 #include <iostream>
 #include <vector>
 #include <random>
@@ -7,10 +8,10 @@
 
 using namespace std;
 
-InterfaceCLI::InterfaceCLI(const vector<Candidato*>& listaOriginal, std::string ttyNovo) {
+// Atualizado para receber CandidatoConcreto*
+InterfaceCLI::InterfaceCLI(const vector<CandidatoConcreto*>& listaOriginal, std::string ttyNovo) {
     this->candidatosDaInterface = listaOriginal;
     this->terminalJanelaNova = ttyNovo;
-    this->nome;
 }
 
 void InterfaceCLI::exibirMenu() {
@@ -34,13 +35,14 @@ void InterfaceCLI::exibirMenu() {
         outTerm << "4. Avançar Etapa" << std::endl;
         outTerm << "5. Finalizar Debate e Gerar Relatório" << std::endl;
         outTerm << "6. Sair" << std::endl;
-        outTerm << "Escolha uma opção: " <<endl;
+        outTerm << "Escolha uma opção: " << endl;
         
         inTerm >> opcao;
 
         switch(opcao) {
             case 1: {
                 int tempoPadrao = 60;
+                // Certifique-se de que sua Facade aceita o vetor de CandidatoConcreto*
                 Facade::getInstance().configurarDebate(this->candidatosDaInterface, tempoPadrao);
                 outTerm << "[CLI]: Configurado com sucesso!" << std::endl;
                 break;
@@ -66,14 +68,12 @@ void InterfaceCLI::exibirMenu() {
                 inTerm >> tempoDesejado;
 
                 std::cout << "\n=== INICIANDO RODADA AUTOMÁTICA EM TEMPO REAL ===" << std::endl;
-                
                 Facade::getInstance().iniciarRodadaAutomatica(tempoDesejado);
-                
                 std::cout << "=== FIM DA RODADA AUTOMÁTICA ===" << std::endl;
                 break;
             }
             case 5:
-                Facade::getInstance().fincalizarDebate();
+                Facade::getInstance().fincalizarDebate(); // Mantido o typo original do seu método
                 break;
             case 6:
                 std::cout << "Saindo da interface CLI..." << std::endl;
@@ -81,6 +81,7 @@ void InterfaceCLI::exibirMenu() {
                 system("pkill xterm");
                 break;
             default:
-                outTerm << "Opção inválida! Tente novamente." << std::endl;        }
+                outTerm << "Opção inválida! Tente novamente." << std::endl;
+        }
     } while (opcao != 6);
 }

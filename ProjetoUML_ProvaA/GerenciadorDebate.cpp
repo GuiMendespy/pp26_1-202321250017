@@ -6,7 +6,6 @@
 #include <thread> 
 #include <chrono> 
 
-// Construtor
 GerenciadorDebate::GerenciadorDebate() {
     this->faseAtual = "Inicial";
     this->inquiridor = nullptr;
@@ -14,8 +13,7 @@ GerenciadorDebate::GerenciadorDebate() {
     this->candidatoAtual = nullptr;
 }
 
-// Configura os candidatos e prepara o balde de sorteio único
-void GerenciadorDebate::setCandidatos(const vector<Candidato*>& novosCandidatos) {
+void GerenciadorDebate::setCandidatos(const vector<CandidatoConcreto*>& novosCandidatos) {
     this->candidatos = novosCandidatos;
     this->inquiridoresRestantes = novosCandidatos; 
 
@@ -26,13 +24,12 @@ void GerenciadorDebate::setCandidatos(const vector<Candidato*>& novosCandidatos)
     cout << ("O nome dos respectivos candidatos são: ") << endl;
 
     for (size_t i = 0; i < this->candidatos.size(); i++) {
-        string nomeDoCandidato = this->candidatos[i]->getNome();
+        string nomeDoCandidato = this->candidatos[i]->getNome(); 
         this->registrarAcao("- " + nomeDoCandidato);
         cout << ("- " + nomeDoCandidato) << endl;
     }
 }
 
-// Sorteia o Inquiridor garantindo que ele só seja sorteado UMA vez por ciclo
 void GerenciadorDebate::sortearInquiridor() {
     if (inquiridoresRestantes.empty()) {
         std::cout << "[Gerenciador]: Todos já foram inquiridores!" << std::endl;
@@ -55,7 +52,7 @@ void GerenciadorDebate::sortearInquiridor() {
 }
 
 void GerenciadorDebate::definirInquirido(int id) {
-    Candidato* candidatoEscolhido = nullptr;
+    CandidatoConcreto* candidatoEscolhido = nullptr;
 
     if (id >= 0 && id < static_cast<int>(candidatos.size())) {
         candidatoEscolhido = candidatos[id];
@@ -75,7 +72,6 @@ void GerenciadorDebate::definirInquirido(int id) {
         } while (this->inquiridor != nullptr && candidatoEscolhido->getNome() == this->inquiridor->getNome());
     }
 
-    // Agora temos a garantia absoluta de que o inquirido é válido e diferente do inquiridor
     this->inquirido = candidatoEscolhido;
     this->nomeInquirido = this->inquirido->getNome();
 
@@ -83,13 +79,12 @@ void GerenciadorDebate::definirInquirido(int id) {
     this->registrarAcao("Inquirido definido com sucesso: " + this->nomeInquirido);
 }
 
-// Inicializa o tempo da fase ativa
+// Inicializa o tempo da fase activa
 void GerenciadorDebate::iniciarFase(int tempo) {
     this->faseAtual = "Fase Ativa";
     this->cronometro.iniciar(tempo);
     this->registrarAcao("Uma nova fase de debate foi iniciada!");
     cout << ("Uma nova fase de debate foi iniciada!") << endl;
-
 }
 
 // Repassa com segurança para o Logger da Facade
@@ -97,7 +92,6 @@ void GerenciadorDebate::registrarAcao(string acao) {
     Facade::getInstance().getLogger().registrar("[GerenciadorDebate] " + acao);
 }
 
-// Métodos do Padrão Observer (Subject)
 void GerenciadorDebate::registrarObservador(Observador* obs) {
     if (obs != nullptr) {
         this->observadores.push_back(obs);
@@ -122,7 +116,7 @@ void GerenciadorDebate::notificarTodos(string mensagem) {
     }
 }
 
-void GerenciadorDebate::setCandidatoAtual(Candidato* c) {
+void GerenciadorDebate::setCandidatoAtual(CandidatoConcreto* c) {
     this->candidatoAtual = c;
     if (this->candidatoAtual != nullptr) {
         string msg = "O candidato atual mudou e começou a falar no debate.";
@@ -130,7 +124,6 @@ void GerenciadorDebate::setCandidatoAtual(Candidato* c) {
     }
 }
 
-// Avança para a próxima etapa interna (Pergunta -> Resposta -> Réplica -> Tréplica)
 void GerenciadorDebate::proximaAcao() {
     if (this->inquiridor == nullptr || this->inquirido == nullptr) {
         std::cout << "[Erro]: Não é possível avançar. Certifique-se de que o inquiridor e inquirido foram definidos." << std::endl;
@@ -141,7 +134,6 @@ void GerenciadorDebate::proximaAcao() {
         case PERGUNTA:
             std::cout << "\n==========================================" << std::endl;
             std::cout << "--- ETAPA: PERGUNTA ---" << std::endl;
-
             std::cout << ">> " << this->inquiridor->getNome() << " está fazendo a pergunta." << std::endl;
             std::cout << "==========================================" << std::endl;
             
@@ -153,7 +145,6 @@ void GerenciadorDebate::proximaAcao() {
         case RESPOSTA:
             std::cout << "\n==========================================" << std::endl;
             std::cout << "--- ETAPA: RESPOSTA ---" << std::endl;
-
             std::cout << ">> " << this->inquirido->getNome() << " está respondendo." << std::endl;
             std::cout << "==========================================" << std::endl;
             
@@ -207,9 +198,7 @@ void GerenciadorDebate::executarRodadaAutomatica(int tempoPorEtapa) {
 
     for (int i = 0; i < 4; i++) {
         this->proximaAcao();
-
         this->cronometro.iniciar(tempoPorEtapa);
-
         std::this_thread::sleep_for(std::chrono::seconds(tempoPorEtapa));
         
         std::cout << "\n[Tempo Esgotado!] Fim do tempo para esta etapa.\n" << std::endl;

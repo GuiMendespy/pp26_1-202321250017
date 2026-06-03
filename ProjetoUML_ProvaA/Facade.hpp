@@ -5,13 +5,13 @@
 using namespace std;
 
 class GerenciadorDebate; 
-class Candidato;
+class CandidatoConcreto; 
 
 class Facade {
     private:
         static Facade instance;
         GerenciadorDebate* gerenciador;
-        Candidato* candidato;
+        CandidatoConcreto* candidato;
         Logger logger;
         Facade();
 
@@ -19,7 +19,9 @@ class Facade {
         Facade(const Facade&) = delete;
         void operator=(const Facade&) = delete;
         static Facade& getInstance();
-        void configurarDebate(vector<Candidato*> candidato, int tempos);
+        
+        void configurarDebate(vector<CandidatoConcreto*> candidatos, int tempos);
+        
         void registrarObservador(Observador* obs);
         void sortearInquiridor();
         void definirInquirido(int idCandidato);

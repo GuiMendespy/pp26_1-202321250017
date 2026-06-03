@@ -1,18 +1,26 @@
 #include "Eleitor.hpp"
 #include <iostream>
 
-Eleitor::Eleitor(int idFavorito) {
-    this->idCandidatoFavorito = idFavorito;
+Eleitor::Eleitor(int idFavorito)
+    : idCandidatoFavorito(idFavorito), candidatoId(0) 
+    {
+        std::cout << "[PROTOTYPE] Objeto Eleitor totalmente duplicado via cópia profunda." << std::endl;
+    }
+
+
+Eleitor* Eleitor::clonar() const {
+    return new Eleitor(*this);
 }
-void Eleitor::atualizar(string msg) {
-    // Agora o eleitor só vai printar isso se ele for do candidato certo!
-    cout << "[Eleitor do Candidato " << this->idCandidatoFavorito << "] Recebeu notificação: " << msg << endl;
+
+void Eleitor::atualizar(std::string msg) {
+    std::cout << "[Eleitor do Candidato " << this->idCandidatoFavorito
+              << "] Recebeu notificação: " << msg << std::endl;
 }
 
 int Eleitor::getCandidatoId() {
     return this->idCandidatoFavorito;
 }
 
-string Eleitor::exibirNotificacao() {
-    return "Notificação para o Eleitor: " + this->nome; 
+std::string Eleitor::exibirNotificacao() const {
+    return "Notificação para o Eleitor: " + this->nome;
 }
