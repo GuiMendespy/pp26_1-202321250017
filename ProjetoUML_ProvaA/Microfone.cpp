@@ -1,23 +1,62 @@
 #include "Microfone.hpp"
+#include "GerenciadorDebate.hpp"
+#include "Candidato.hpp"
 #include <iostream>
 
-Microfone::Microfone() : id(0), ligado(false) {
-}
+Microfone::Microfone()
+    : id(0), ligado(false), botaoDRAtivo(false), candidatoAssociado(nullptr) {}
 
 void Microfone::ligar() {
     if (!ligado) {
-        this->ligado = true;
-        std::cout << "[Microfone]: Ligado. Som liberado." << std::endl;
+        ligado = true;
+        cout << "[Microfone " << id << "]: Ligado. Som liberado." << endl;
     } else {
-        std::cout << "[Microfone]: Já está ligado." << std::endl;
+        cout << "[Microfone " << id << "]: Ja esta ligado." << endl;
     }
 }
 
 void Microfone::desligar() {
     if (ligado) {
-        this->ligado = false;
-        std::cout << "[Microfone]: Desligado. Mudo." << std::endl;
+        ligado = false;
+        cout << "[Microfone " << id << "]: Desligado. Mudo." << endl;
     } else {
-        std::cout << "[Microfone]: Já está desligado." << std::endl;
+        cout << "[Microfone " << id << "]: Ja esta desligado." << endl;
     }
+}
+
+// Novo: candidato pressiona o botão DR integrado ao microfone.
+// O microfone avisa o GerenciadorDebate, que decide enfileirar ou bloquear.
+void Microfone::pressionarBotaoDR(
+    GerenciadorDebate* ger
+) {
+
+    if (candidatoAssociado == nullptr) {
+        cout << "[Microfone " << id
+             << "]: Nenhum candidato associado. DR ignorado."
+             << endl;
+        return;
+    }
+
+    cout << "Nome do candidato: "
+         << candidatoAssociado->getNome()
+         << endl;
+
+    cout << "[Microfone " << id
+         << "]: Botao DR pressionado por "
+         << candidatoAssociado->getNome()
+         << "."
+         << endl;
+
+    botaoDRAtivo = true;
+
+    ger->solicitarDR(candidatoAssociado);
+
+    botaoDRAtivo = false;
+}
+
+void Microfone::setCandidatoAssociado(
+    Candidato* candidato
+) {
+
+    candidatoAssociado = candidato;
 }

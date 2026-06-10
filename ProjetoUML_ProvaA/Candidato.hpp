@@ -12,6 +12,7 @@ private:
     bool jaPerguntou;
     Microfone microfone;
     friend class CandidatoConcretoBuilder;
+    
 
 public:
     Candidato(string nomeInicial = "", Microfone* m = nullptr);
@@ -21,6 +22,6 @@ public:
     void marcarComoInquiridor();
     string getNome() const; 
     int getId() const;
-    
-    //virtual Prototipo* clonar() const override = 0;
+    Microfone& getMicrofone();
+    virtual Prototipo* clonar() const override = 0;
 };

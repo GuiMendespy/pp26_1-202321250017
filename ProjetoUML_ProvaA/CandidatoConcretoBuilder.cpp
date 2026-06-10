@@ -21,9 +21,19 @@ CandidatoBuilder* CandidatoConcretoBuilder::setId(int id) {
 }
 
 CandidatoBuilder* CandidatoConcretoBuilder::setMicrofone(Microfone* m) {
+
     if (m != nullptr) {
-        candidato->microfone = *m; 
+
+        candidato->microfone = *m;
+
+        candidato->microfone.setCandidatoAssociado(
+            candidato.get()
+        );
+
+        std::cout
+            << "[BUILDER] Reassociando microfone apos setMicrofone\n";
     }
+
     return this;
 }
 

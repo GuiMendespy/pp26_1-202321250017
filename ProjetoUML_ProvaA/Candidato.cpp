@@ -1,20 +1,32 @@
 #include "Candidato.hpp"
 #include <iostream>
 
-Candidato::Candidato(string nomeInicial, Microfone* m) : id(0), jaPerguntou(false) {
-    this->nome = nomeInicial;
+Candidato::Candidato(
+    string nomeInicial,
+    Microfone* m
+)
+    : id(0),
+      jaPerguntou(false)
+{
+    nome = nomeInicial;
+
     if (m != nullptr) {
-        this->microfone = *m;
+        microfone = *m;
     }
+
+    // Sempre associa o dono do microfone
+    microfone.setCandidatoAssociado(this);
 }
 
 Candidato::Candidato(const Candidato& outro) {
+
+
     this->id = outro.id;
     this->nome = outro.nome;
     this->jaPerguntou = outro.jaPerguntou;
     this->microfone = outro.microfone;
-    
-    std::cout << "[PROTOTYPE] Estrutura base de Candidato clonada com sucesso." << std::endl;
+
+    microfone.setCandidatoAssociado(this);
 }
 
 void Candidato::marcarComoInquiridor() {
@@ -25,3 +37,7 @@ void Candidato::marcarComoInquiridor() {
 
 string Candidato::getNome() const { return this->nome; }
 int Candidato::getId() const { return this->id; }
+
+Microfone& Candidato::getMicrofone() {
+    return microfone;
+}
